@@ -20,6 +20,7 @@ module.exports = (app) => {
 
   //Get access to the user
   app.get('/api/current_user', (req,res) => {
+    //res.send(req.session);  //mongodb id (GUID)
     res.send(req.user); //returns user detail from the DB
   });
 };
