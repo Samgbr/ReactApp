@@ -20,9 +20,9 @@ passport.deserializeUser((id, done) => {
 
 // console.developers.google.com
 //We have to query if the profile exists or not on the DB to eliminate redundancy
-//callbackURI relative path used causes issues on production bcz heroku proxy change the link to http instead of https
-//Solution is to give absolute path for dev and prod
-//The second one is to set up the proxy
+//callbackURI relative path used causes issues "redirect URI mismatch" on production bcz heroku proxy change the link to http instead of https
+//The first solution is to give absolute path for dev and prod
+//The second one is to set up the proxy by adding proxy:true
 passport.use(new GoogleStrategy({
   clientID: keys.googleClientID,
   clientSecret: keys.googleClientSecret,
