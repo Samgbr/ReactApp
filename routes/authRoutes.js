@@ -9,13 +9,22 @@ module.exports = (app) => {
   );
 
   //create a route handler for /auth/google/callback
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    //Where the middleware is sent to after it has been authenticated
+    //we create an arrow function to redirect to surveys
+    (req, res) => {
+      res.redirect('/surveys'); //redirect to surveys url
+    }
+  );
 
   //get request for logout
   app.get('/api/logout', (req, res) => {
     //req has a passport function called logout()
     req.logout();  //cookies will expires
-    res.send(req.user); //no user seen
+    //res.send(req.user); //no user seen used for testing
+    res.redirect('/'); //after logout redirect back to the root route
   });
 
   //Get access to the user

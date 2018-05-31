@@ -28,26 +28,23 @@ passport.use(new GoogleStrategy({
   clientSecret: keys.googleClientSecret,
   callbackURL: '/auth/google/callback',
   proxy: true
-}, (accessToken, refreshToken, profile, done) => {
+},
+async (accessToken, refreshToken, profile, done) => {
   //Check if the ID exists or not and
   //this query does not return a const but a promise (used to handle asynchronous code)
-  User.findOne({googleID: profile.id})
-  //promise
-    .then((existingUser) => {
+  const existingUser = await User.findOne({googleID: profile.id})
+  //promise .then() replaced with async/await
       if(existingUser) {
         //We don't have to create a new user ID
         //The done function tells when finished , null shows that we are done without any errors
-        done(null, existingUser);  //err is represente by null
-      } else {
+        return done(null, existingUser);  //err is represente by null
+      }
         //We have to crate a new user on our DB
         //create a new user and save profile id instance
         //promise
         //Here we have to make sure the user record is created before calling done
-        new User ({ googleID: profile.id})  //only creates a model instance
-        .save()   //saves
-        .then(user => done(null, user)); //user refers to the same model created
-      }
-    });
+        const user = await new User ({ googleID: profile.id}).save()   //saves and only creates a model instance
+        done(null, user); //user refers to the same model created
   console.log('accessToken: ', accessToken);
   console.log('refreshToken: ', refreshToken);
   console.log('profile ', profile);
