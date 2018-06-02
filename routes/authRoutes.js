@@ -6,7 +6,7 @@ module.exports = (app) => {
   app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
   })
-  );
+);
 
   //create a route handler for /auth/google/callback
   app.get(
